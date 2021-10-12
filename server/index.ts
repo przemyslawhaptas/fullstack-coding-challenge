@@ -1,57 +1,54 @@
 import express from 'express'
 
-import {IGetUserAuthInfoRequest, IContract} from './definitions'
+import { IGetUserAuthInfoRequest } from './definitions'
+import * as contractsUseCases from './contracts/useCases';
+import { NotFound } from './contracts/definitions';
 
 const app = express()
 
-let contracts: IContract[] = [
-    {
-        id: '1pTsrFI29BEexmhOIh1USMxcLxR',
-        name: 'SalesLoft',
-        renewalDate:'1/10/2022',
-        value: 50000
-    },
-    {
-        id: '1pTswrX8ax9qRfCQ12JeFaUs8dk',
-        name: 'Datadog',
-        renewalDate:'6/10/2021',
-        value: 30000
-    },
-    {
-        id: '1pTswotqdFXl5aqM6QRQbTdkJVm',
-        name: 'Sentry.io',
-        renewalDate:'5/7/2022',
-        value: 10000
-    }
-]
+app.use((req: IGetUserAuthInfoRequest, res, next) => {
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Origin', req.get('origin') || '')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE')
 
-app.use((req: IGetUserAuthInfoRequest, res, next) => {  
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-    res.setHeader('Access-Control-Allow-Origin', req.get('origin') || '')
-    res.setHeader('Access-Control-Allow-Credentials', 'true')
-    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE')
-  
-    next()
-  })
-  
+  next()
+});
+
+app.use(express.json());
+
 app.get('/healthcheck', (req, res) => {
-    res.sendStatus(200)
+  res.sendStatus(200)
 })
-  
 
 app.get('/contracts', async (req: IGetUserAuthInfoRequest, res) => {
-    console.log('Sending contracts...', contracts)
-    return res.send(contracts)
-})
+  const result = contractsUseCases.getAll();
 
+  if (result.isLeft()) {
+    return res.sendStatus(400);
+  }
 
-/*
-Implement the following update route
+  const contracts = result.right();
+  console.log('Sending contracts...', contracts);
 
-app.X('X', (req, res) => {
-    
-})
-*/
+  return res.send(contracts);
+});
+
+app.post('/contracts/:id', async (req: IGetUserAuthInfoRequest, res) => {
+  const result = contractsUseCases.update(req.params.id, req.body);
+
+  if (result.isLeft()) {
+    if (result.left() === NotFound) {
+      return res.sendStatus(404);
+    } else {
+      return res.sendStatus(400);
+    }
+  }
+
+  const contract = result.right();
+
+  return res.send(contract);
+});
 
 app.listen(8080, () => {
     console.log(`Server is running at https://localhost:8080`);
