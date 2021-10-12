@@ -1,0 +1,17 @@
+.sider {
+  position: relative;
+  background: white;
+  width: 220px;
+  flex: 0 0 220px;
+  text-align: center;
+}
+
+// not sure if we need this actually. Copied from ants
+.menuStyle {
+  height: 100%;
+  margin-top: -0.1px;
+  padding-top: 0.1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

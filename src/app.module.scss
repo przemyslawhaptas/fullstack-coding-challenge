@@ -1,0 +1,39 @@
+.widthOverride {
+  background: white;
+  width: 220px;
+  min-width: 220px !important;
+  max-width: 220px;
+  flex: 0 0 220px;
+  text-align: center;
+}
+
+.layout {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex: auto;
+  min-height: 0;
+  background: #f5f6fa;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.contentLayout {
+  @extend .layout;
+  overflow-x: hidden;
+  overflow: auto;
+  position: unset;
+  height: unset;
+  flex-direction: column;
+}
+
+.content {
+  flex: auto;
+  min-height: 0;
+  background: rgb(245, 246, 250);
+}
+
+* {
+  box-sizing: border-box;
+}
