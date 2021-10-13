@@ -37,3 +37,21 @@
 * {
   box-sizing: border-box;
 }
+
+.contractRow:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.contractTable {
+  width: 50%;
+  text-align: left;
+  border: 1px solid lightgray;
+  transform: translate(50%, 50%);
+}
+
+.contractTableTitle {
+  width: 100%;
+  text-align: center;
+  margin-top: 48px;
+}

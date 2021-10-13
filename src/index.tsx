@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { initializeContractStore} from './stores/contractStore'
+import { initializeContractStore } from './stores/contractStore'
 
 initializeContractStore()
-
 
 ReactDOM.render(
   <React.StrictMode>
